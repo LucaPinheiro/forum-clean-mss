@@ -1,21 +1,25 @@
-import { expect, test } from "vitest";
-import { QuestionRepository } from "../repositories/questions-repository";
-import { Question } from "../../enterprise/entities/question";
+import { expect, it, beforeEach, describe  } from "vitest";
 import { CreateQuestionUseCase } from "./create-question";
 
-const fakeQuestionRepository: QuestionRepository = {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  create: async (question: Question) => {},
-};
+import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
 
-test("create an answer", async () => {
-  const createQuestion = new CreateQuestionUseCase(fakeQuestionRepository);
+let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
+let sut: CreateQuestionUseCase;
 
-  const { question } = await createQuestion.execute({
-    authorId: "1",
-    title: "Nova pergunta",
-    content: "conteúdo da pergunta",
+describe("Create Question", () => {
+  beforeEach(() => {
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository();
+    sut = new CreateQuestionUseCase(inMemoryQuestionsRepository);
   });
-  expect(question.id).toBeTruthy();
-  expect(question.content).toEqual("conteúdo da pergunta");
+  console.log('deu merda', sut);
+  it("should be able to create a question", async () => {
+    const { question } = await sut.execute({
+      authorId: "1",
+      title: "Nova pergunta",
+      content: "conteúdo da pergunta",
+    });
+    console.log(question);
+    expect(question.id).toBeTruthy();
+    expect(question.content).toEqual("conteúdo da pergunta");
+  });
 });
