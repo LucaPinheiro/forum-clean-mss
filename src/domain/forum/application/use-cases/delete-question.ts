@@ -1,4 +1,4 @@
-import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
+import { QuestionRepository } from "../repositories/questions-repository";
 
 interface DeleteQuestionUseCaseRequest {
   authorId: string;
@@ -6,7 +6,7 @@ interface DeleteQuestionUseCaseRequest {
 }
 interface DeleteQuestionUseCaseResponse {}
 export class DeleteQuestionUseCase {
-  constructor(private questionsRepository: InMemoryQuestionsRepository) {}
+  constructor(private questionsRepository: QuestionRepository) {}
   async execute({
     questionId,
     authorId,
