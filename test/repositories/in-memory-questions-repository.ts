@@ -14,7 +14,6 @@ export class InMemoryQuestionsRepository implements QuestionRepository {
     return question;
   }
 
-
   async findBySlug(slug: string): Promise<Question | null> {
     const question = this.items.find((item) => item.slug.value === slug);
 
@@ -29,9 +28,15 @@ export class InMemoryQuestionsRepository implements QuestionRepository {
     this.items.push(question);
   }
 
-  async delete(question: Question) {
-    const itemIndex =  this.items.findIndex(item => item.id === question.id)
+  async save(question: Question): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === question.id);
 
-    this.items.splice(itemIndex, 1)
+    this.items[itemIndex] = question;
+  }
+
+  async delete(question: Question) {
+    const itemIndex = this.items.findIndex((item) => item.id === question.id);
+
+    this.items.splice(itemIndex, 1);
   }
 }
