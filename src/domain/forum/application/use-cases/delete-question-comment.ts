@@ -1,12 +1,13 @@
 import { Either, left, right } from "../../../../core/either";
 import { QuestionCommentsRepository } from "../repositories/question-comments-repository";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 interface DeleteQuestionCommentUseCaseRequest {
   authorId: string;
   questionCommentId: string;
 }
 
-type DeleteQuestionCommentUseCaseResponse = Either<string, {}>;
+type DeleteQuestionCommentUseCaseResponse = Either<ResourceNotFoundError, {}>;
 
 export class DeleteQuestionCommentUseCase {
   constructor(private questionCommentsRepository: QuestionCommentsRepository) {}
@@ -18,7 +19,7 @@ export class DeleteQuestionCommentUseCase {
       await this.questionCommentsRepository.findById(questionCommentId);
 
     if (!questionComment) {
-      return left("Question comment not found.");
+      return left(new ResourceNotFoundError("Question comment"));
     }
 
     if (questionComment.authorId.toString() !== authorId) {
