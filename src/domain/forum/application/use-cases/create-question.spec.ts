@@ -16,9 +16,11 @@ describe("Create Question", () => {
       authorId: "1",
       title: "Nova pergunta",
       content: "conteúdo da pergunta",
+      attachmentsIds: ["1", "2"],
     });
     console.log(question);
     expect(question.id).toBeTruthy();
     expect(question.content).toEqual("conteúdo da pergunta");
+    expect(question.attachments).toHaveLength(2);
   });
 });
